@@ -91,46 +91,37 @@
 
         /* --- STATE: UNLOCKED (MAIN CONTENT) --- */
         #MainContent {
-            /* Główny kontener pojawia się płynnie */
             opacity: 0;
-            transition: opacity 1.5s ease 0.5s;
+            transition: opacity 2s ease 1s;
         }
         #MainContent.visible { opacity: 1; }
 
-        /* --- ANIMACJA ELEMENTÓW (STAGGERED REVEAL) --- */
-        .stagger-reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            /* Animacja wejścia: Czas i krzywa zbieżna z index.html */
-            transition: opacity 1.5s ease, transform 1.5s var(--ease-luxury);
+        /* --- SECTION 1: HERO & UPLOAD (IVORY) --- */
+        #CM_Hero {
+            background-color: var(--bg-ivory);
+            padding: 8rem 2rem 6rem 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* ZMIANA: Relative pozwala na pozycjonowanie przycisku wewnątrz sekcji */
+            position: relative; 
         }
 
-        /* Aktywacja animacji, gdy kontener jest widoczny */
-        #MainContent.visible .stagger-reveal {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Opóźnienia */
-        #MainContent.visible .delay-1 { transition-delay: 0.2s; } /* Pre-title */
-        #MainContent.visible .delay-2 { transition-delay: 0.4s; } /* Title */
-        #MainContent.visible .delay-3 { transition-delay: 0.7s; } /* Intro */
-        #MainContent.visible .delay-4 { transition-delay: 1.0s; } /* Button */
-
-
-        /* --- NAVIGATION: THE RETURN KEY (MINIMALIST) --- */
-        .nav-fixed-top {
-            position: fixed;
+        /* --- NAVIGATION: THE RETURN KEY (ABSOLUTE WITHIN HERO) --- */
+        .hero-nav {
+            position: absolute;
             top: 2rem;
             left: 2rem;
-            z-index: 1000;
-            /* Nawigacja też wjeżdża z animacją */
+            z-index: 10; /* Nad tłem, pod modalem */
+            
+            /* Animacja wejścia zsynchronizowana z sekcją */
             opacity: 0;
             transform: translateY(-10px);
             transition: opacity 1s ease 1.5s, transform 1s ease 1.5s;
         }
         
-        #MainContent.visible .nav-fixed-top {
+        #MainContent.visible .hero-nav {
             opacity: 1;
             transform: translateY(0);
         }
@@ -169,16 +160,22 @@
              transform: translateX(-3px);
         }
 
-
-        /* --- SECTION 1: HERO & UPLOAD (IVORY) --- */
-        #CM_Hero {
-            background-color: var(--bg-ivory);
-            padding: 8rem 2rem 6rem 2rem;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        /* Hero Text & Elements */
+        .stagger-reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.5s ease, transform 1.5s var(--ease-luxury);
         }
+
+        #MainContent.visible .stagger-reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #MainContent.visible .delay-1 { transition-delay: 0.2s; }
+        #MainContent.visible .delay-2 { transition-delay: 0.4s; }
+        #MainContent.visible .delay-3 { transition-delay: 0.7s; }
+        #MainContent.visible .delay-4 { transition-delay: 1.0s; }
 
         .cm-pre-title {
             font-family: var(--font-sans);
@@ -192,7 +189,7 @@
 
         .cm-title {
             font-family: var(--font-serif);
-            font-size: 3.5rem; /* Zbalansowana wielkość */
+            font-size: 3.5rem; 
             font-style: italic;
             color: var(--text-main);
             margin-bottom: 2rem;
@@ -211,7 +208,7 @@
             opacity: 0.9;
         }
 
-        /* --- UPLOAD BUTTON (SWIPE FILL ANIMATION) --- */
+        /* --- UPLOAD BUTTON (THE SWIPE FILL) --- */
         .upload-zone-elegant {
             position: relative;
             cursor: pointer;
@@ -224,30 +221,28 @@
             background-color: transparent;
             color: var(--text-main);
             border: 1px solid rgba(61, 56, 52, 0.4);
-            overflow: hidden; /* Ważne dla efektu swipe */
+            overflow: hidden; 
             transition: border-color 0.4s ease;
         }
 
-        /* Warstwa koloru (niewidoczna na start) */
         .upload-zone-elegant::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 0%; /* Startowa szerokość */
+            width: 0%; 
             height: 100%;
-            background-color: var(--accent-burgundy); /* Bordo */
-            transition: width 0.6s var(--ease-luxury); /* Płynne wypełnianie */
+            background-color: var(--accent-burgundy); 
+            transition: width 0.6s var(--ease-luxury); 
             z-index: 0;
         }
 
-        /* Efekt Hover */
         .upload-zone-elegant:hover {
             border-color: var(--accent-burgundy);
         }
 
         .upload-zone-elegant:hover::before {
-            width: 100%; /* Wypełnij do końca */
+            width: 100%; 
         }
 
         .upload-text-elegant {
@@ -255,13 +250,13 @@
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.25em;
-            position: relative; /* Aby tekst był nad warstwą ::before */
+            position: relative; 
             z-index: 1;
             transition: color 0.6s ease;
         }
 
         .upload-zone-elegant:hover .upload-text-elegant {
-            color: var(--bg-ivory); /* Zmiana koloru tekstu na jasny */
+            color: var(--bg-ivory); 
         }
 
         #fileInput { display: none; }
@@ -437,38 +432,6 @@
         }
         
         .close-modal-btn:hover { opacity: 1; }
-
-        /* NAVIGATION ARROWS (MODAL) */
-        .nav-btn-modal {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--bg-ivory);
-            font-family: var(--font-sans);
-            font-size: 3rem;
-            font-weight: 300;
-            cursor: pointer;
-            z-index: 2010;
-            opacity: 0.6;
-            transition: opacity 0.3s, transform 0.3s;
-            padding: 20px;
-        }
-
-        .nav-btn-modal:hover {
-            opacity: 1;
-            transform: translateY(-50%) scale(1.1);
-        }
-
-        .prev-btn { left: 20px; }
-        .next-btn { right: 20px; }
-
-        @media (max-width: 768px) {
-            .nav-btn-modal { font-size: 2rem; padding: 10px; }
-            .prev-btn { left: 5px; }
-            .next-btn { right: 5px; }
-        }
         
         .modal-caption {
             margin-top: 1rem;
@@ -480,6 +443,34 @@
             opacity: 0.8;
             width: 100%;
             text-align: right;
+        }
+
+        /* --- NAVIGATION CONTROLS (BELOW FRAME) --- */
+        .modal-controls {
+            display: flex;
+            gap: 3rem;
+            margin-top: 1.5rem;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .nav-btn-modal {
+            background: none;
+            border: none;
+            color: var(--bg-ivory);
+            font-family: var(--font-sans);
+            font-size: 2.5rem;
+            font-weight: 300;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.3s, transform 0.3s;
+            padding: 10px;
+            line-height: 1;
+        }
+
+        .nav-btn-modal:hover {
+            opacity: 1;
+            transform: scale(1.1);
         }
 
         /* --- FOOTER (MULBERRY) --- */
@@ -530,16 +521,16 @@
     <!-- MAIN CONTENT CONTAINER -->
     <div id="MainContent">
         
-        <!-- NEW: THE RETURN KEY (MINIMALIST) -->
-        <nav class="nav-fixed-top">
-            <a href="index.html" class="return-key">
-                <span class="return-icon">←</span>
-                Concierge
-            </a>
-        </nav>
-
         <!-- SECTION 1: HERO & UPLOAD (IVORY) -->
         <section id="CM_Hero">
+            <!-- NEW: THE RETURN KEY (ABSOLUTE WITHIN HERO) -->
+            <nav class="hero-nav">
+                <a href="index.html" class="return-key">
+                    <span class="return-icon">←</span>
+                    Concierge
+                </a>
+            </nav>
+
             <span class="cm-pre-title stagger-reveal delay-1">Wasza Perspektywa</span>
             <h1 class="cm-title stagger-reveal delay-2">Collective Memory</h1>
             <p class="cm-intro stagger-reveal delay-3">
@@ -551,7 +542,8 @@
             <label for="fileInput" class="upload-zone-elegant stagger-reveal delay-4">
                 <span class="upload-text-elegant">Dodaj Wspomnienie</span>
             </label>
-            <input type="file" id="fileInput" accept="image/*" capture="environment">
+            <!-- FIX: Remove capture="environment" to allow gallery selection on mobile -->
+            <input type="file" id="fileInput" accept="image/*">
         </section>
 
         <!-- SECTION 2: GALLERY (WHITE) - ATELIER GRID -->
@@ -569,15 +561,21 @@
 
     </div>
 
-    <!-- LIGHTBOX MODAL (WITH PASSE-PARTOUT) -->
+    <!-- LIGHTBOX MODAL (WITH CONTROLS BELOW) -->
     <div id="ImageModal" onclick="closeModal()">
         <button class="close-modal-btn">&times;</button>
-        <button class="nav-btn-modal prev-btn" onclick="navigateGallery(-1)">←</button>
-        <button class="nav-btn-modal next-btn" onclick="navigateGallery(1)">→</button>
+        
         <div class="modal-content" onclick="event.stopPropagation()">
+            <!-- Biała ramka (Passe-partout) -->
             <div class="modal-frame">
                 <img id="modalImg" class="modal-img" src="" alt="Full size memory">
                 <div id="modalCaption" class="modal-caption"></div>
+            </div>
+            
+            <!-- NEW: Controls Below Frame -->
+            <div class="modal-controls">
+                 <button class="nav-btn-modal" onclick="navigateGallery(-1)">←</button>
+                 <button class="nav-btn-modal" onclick="navigateGallery(1)">→</button>
             </div>
         </div>
     </div>
